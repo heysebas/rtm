@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .actions a {
+            margin-right: 10px;
+            color: #007bff;
+        }
+        .actions a:hover {
+            text-decoration: underline;
+        }
+        .add-client {
+            display: block;
+            text-align: right;
+            margin: 20px 0;
+        }
+    </style>
+    <script>
+        async function fetchNameById(url, id) {
+            try {
+                const response = await fetch(`${url}/${id}`);
+                const data = await response.json();
+                return data.name;
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                return 'Unknown';
+            }
+        }
+
+        async function updateTable() {
+            const departmentUrl = 'https://api-colombia.com/api/v1/Department';
+            const cityUrl = 'https://api-colombia.com/api/v1/City';
+
+            const rows = document.querySelectorAll('tbody tr');
+            for (const row of rows) {
+                const departmentId = row.querySelector('td:nth-child(8)').innerText;
+                const cityId = row.querySelector('td:nth-child(9)').innerText;
+
+                const departmentName = await fetchNameById(departmentUrl, departmentId);
+                const cityName = await fetchNameById(cityUrl, cityId);
+
+                row.querySelector('td:nth-child(8)').innerText = departmentName;
+                row.querySelector('td:nth-child(9)').innerText = cityName;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', updateTable);
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h1>Lista de clientes</h1>
+
+    <div class="add-client">
+        <a th:href="@{/customers/new}">Agregar Cliente</a>
+    </div>
+
+    <!-- Formulario de búsqueda -->
+    <div class="search">
+        <input type="text" id="search-input" placeholder="Buscar por documento" onkeyup="filterTable()" />
+    </div>
+
+    <table id="customers-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Documento</th>
+            <th>Telefono</th>
+            <th>Correo</th>
+            <th>Fecha</th>
+            <th>Direccion</th>
+            <th>Departamento</th>
+            <th>Ciudad</th>
+            <th>Accion</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="customer : ${customers}">
+            <td th:text="${customer.id}"></td>
+            <td th:text="${customer.name}"></td>
+            <td th:text="${customer.document}"></td>
+            <td th:text="${customer.phone}"></td>
+            <td th:text="${customer.email}"></td>
+            <td th:text="${customer.date}"></td>
+            <td th:text="${customer.address}"></td>
+            <td th:text="${customer.department}"></td>
+            <td th:text="${customer.city}"></td>
+            <td class="actions">
+                <a th:href="@{'/customers/edit/' + ${customer.id}}">Editar</a> |
+                <a th:href="@{'/customers/delete/' + ${customer.id}}">Eliminar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function filterTable() {
+        const input = document.getElementById('search-input');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('customers-table');
+        const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const cells = rows[i].getElementsByTagName('td');
+            const documentCell = cells[2]; // La columna de documento está en la tercera posición (índice 2)
+
+            if (documentCell) {
+                const textValue = documentCell.textContent || documentCell.innerText;
+                rows[i].style.display = textValue.toLowerCase().indexOf(filter) > -1 ? '' : 'none';
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

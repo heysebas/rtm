@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* To include padding in width */
+        }
+
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+    </style>
+    <title>Edit Client</title>
+</head>
+<body>
+
+<h1>Editar Clientes</h1>
+
+<form th:action="@{'/customers/update/' + ${customer.id}}" th:object="${customer}" method="post">
+    <label for="name">Nombre Completo:</label>
+    <input type="text" id="name" th:field="*{name}" required/>
+
+    <label for="document">Documento:</label>
+    <input type="text" id="document" th:field="*{document}" required/>
+
+    <label for="phone">Teléfono:</label>
+    <input type="text" id="phone" th:field="*{phone}" required/>
+
+    <label for="email">Correo Electrónico:</label>
+    <input type="email" id="email" th:field="*{email}" required/>
+
+    <label for="address">Dirección:</label>
+    <input type="text" id="address" th:field="*{address}" required/>
+
+    <label for="department">Departamento:</label>
+    <select id="department" th:field="*{department}" required>
+        <option value="">Seleccionar Departamento</option>
+        <!-- Opciones de departamento serán añadidas dinámicamente -->
+    </select><br/>
+
+    <label for="city">Ciudad:</label>
+    <select id="city" th:field="*{city}" required>
+        <option value="">Seleccionar Ciudad</option>
+        <!-- Opciones de ciudad serán añadidas dinámicamente -->
+    </select><br/>
+
+    <input type="submit" value="Update"/>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const departmentSelect = document.getElementById('department');
+        const citySelect = document.getElementById('city');
+        let cities = []; // To store all cities
+
+        // Load departments
+        fetch('https://api-colombia.com/api/v1/Department')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(department => {
+                    const option = document.createElement('option');
+                    option.value = department.id; // Adjust based on actual data structure
+                    option.textContent = department.name; // Adjust based on actual data structure
+                    departmentSelect.appendChild(option);
+                });
+
+                // Set selected department
+                departmentSelect.value = /*[[${customer.department}]]*/ ''; // Ensure this value matches the ID
+                departmentSelect.dispatchEvent(new Event('change')); // Trigger change to load cities
+            })
+            .catch(error => {
+                console.error('Error fetching department data:', error);
+            });
+
+        // Load cities
+        fetch('https://api-colombia.com/api/v1/City')
+            .then(response => response.json())
+            .then(data => {
+                cities = data; // Store all cities for later filtering
+
+                // Set selected city after filtering
+                const selectedCity = /*[[${customer.city}]]*/ ''; // Ensure this value matches the ID
+                if (selectedCity) {
+                    const filteredCities = cities.filter(city => city.id == selectedCity); // Adjust based on actual data structure
+                    filteredCities.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city.id; // Adjust based on actual data structure
+                        option.textContent = city.name; // Adjust based on actual data structure
+                        citySelect.appendChild(option);
+                    });
+                    citySelect.value = selectedCity; // Set the selected city
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching city data:', error);
+            });
+
+        // Update cities based on selected department
+        departmentSelect.addEventListener('change', function() {
+            const departmentId = this.value;
+            citySelect.innerHTML = '<option value="">Seleccionar Ciudad</option>'; // Clear previous options
+
+            if (departmentId) {
+                const filteredCities = cities.filter(city => city.departmentId == departmentId); // Adjust based on actual data structure
+                filteredCities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city.id; // Adjust based on actual data structure
+                    option.textContent = city.name; // Adjust based on actual data structure
+                    citySelect.appendChild(option);
+                });
+
+                // Set selected city after filtering
+                const selectedCity = /*[[${customer.city}]]*/ ''; // Ensure this value matches the ID
+                citySelect.value = selectedCity; // Set the selected city
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

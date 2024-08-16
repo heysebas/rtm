@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Vehículo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 75%;
+            margin: auto;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px; /* Espacio entre columnas */
+            row-gap: normal;
+            margin-right: 2%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 16px; /* Añadir separación entre campos */
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            grid-column: span 2; /* Span across both columns */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Agregar Vehículo</h1>
+<form th:action="@{/vehicles/register}" th:object="${vehicle}" method="post">
+
+    <div class="form-grid">
+        <!-- Fields here -->
+        <div>
+            <label for="plateNumber">Placa:</label>
+            <input type="text" id="plateNumber" th:field="*{plateNumber}" required/>
+        </div>
+        <div>
+            <label for="country">País:</label>
+            <input type="text" id="country" th:field="*{country}" required/>
+        </div>
+        <div>
+            <label for="service">Servicio:</label>
+            <select id="service" name="service" required>
+                <option value="">Selecciona un servicio</option>
+                <option value="particular">Particular</option>
+                <option value="publico">Público</option>
+                <option value="ensenanza">Enseñanza</option>
+            </select>
+        </div>
+        <div>
+            <label for="clas">Tipología:</label>
+            <select id="clas" name="clas" required>
+                <option value="">Selecciona una tipología</option>
+                <option value="motocicleta">Motocicleta</option>
+                <option value="motocarro">Motocarro</option>
+                <option value="liviano">Liviano</option>
+                <option value="pesado">Pesado</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Clase:</label>
+            <select id="type" name="type" required>
+                <!-- Options will be dynamically populated -->
+            </select>
+        </div>
+        <div>
+            <label for="brand">Marca:</label>
+            <input type="text" id="brand" th:field="*{brand}" required/>
+        </div>
+        <div>
+            <label for="line">Línea:</label>
+            <input type="text" id="line" th:field="*{line}" required/>
+        </div>
+        <div>
+            <label for="trafficLicenseNumber">Número de licencia de tránsito:</label>
+            <input type="text" id="trafficLicenseNumber" th:field="*{trafficLicenseNumber}" required/>
+        </div>
+        <div>
+            <label for="registrationDate">Fecha Matrícula:</label>
+            <input type="date" id="registrationDate" th:field="*{registrationDate}" required/>
+        </div>
+        <div>
+            <label for="color">Color:</label>
+            <input type="text" id="color" th:field="*{color}" required/>
+        </div>
+        <div id="fuelPropulsionDiv">
+            <label for="fuelPropulsion">Combustible / Propulsión:</label>
+            <select id="fuelPropulsion" name="fuelPropulsion" required>
+                <option value="">Selecciona una opción</option>
+                <!-- Options will be dynamically populated -->
+            </select>
+        </div>
+        <div>
+            <label for="engineNumber">No de Motor:</label>
+            <input type="text" id="engineNumber" th:field="*{engineNumber}" required/>
+        </div>
+        <div>
+            <label for="typeOfMotor">Tipo de Motor:</label>
+            <select id="typeOfMotor" name="typeOfMotor" required>
+                <option value="">Selecciona una opción</option>
+                <!-- Options will be dynamically populated -->
+            </select>
+        </div>
+        <div>
+            <label for="cylinderCapacity">Cilindraje (cm³) (si aplica):</label>
+            <select id="cylinderCapacity" name="cylinderCapacity" required>
+                <option value="">Selecciona una opción</option>
+                <option value="menor_500">Menor a 500 cm³</option>
+                <option value="mayor_500">Mayor a 500 cm³</option>
+                <option value="no_aplica">No Aplica</option>
+            </select>
+        </div>
+        <div>
+            <label for="transmission">Transmisión:</label>
+            <select id="transmission" name="transmission" required>
+                <option value="">Selecciona una opción</option>
+                <option value="automatica">Automática</option>
+                <option value="mecanica">Mecánica</option>
+                <option value="semiautomatica">Semiautomática</option>
+                <option value="no_aplica">No Aplica</option>
+            </select>
+        </div>
+        <div>
+            <label for="power">Potencia (si aplica):</label>
+            <input type="text" id="power" th:field="*{power}" required/>
+        </div>
+        <div>
+            <label for="bodyType">Tipo de Carrocería:</label>
+            <input type="text" id="bodyType" th:field="*{bodyType}" required/>
+        </div>
+        <div>
+            <label for="soat">Fecha Vencimiento SOAT:</label>
+            <input type="date" id="soat" th:field="*{soat}" required/>
+        </div>
+        <div>
+            <label for="ngvConversion">Conversión GNV:</label>
+            <input type="text" id="ngvConversion" th:field="*{ngvConversion}" required/>
+        </div>
+        <div>
+            <label for="dateNgvConversion">Fecha Vencimiento GNV:</label>
+            <input type="date" id="dateNgvConversion" th:field="*{dateNgvConversion}" required/>
+        </div>
+        <div>
+            <label for="documentClient">Documento de Cliente:</label>
+            <input type="text" id="documentClient" th:field="*{documentClient}" required/>
+        </div>
+    </div>
+
+    <input type="submit" value="Guardar"/>
+</form>
+
+<!-- Mostrar mensajes de error -->
+<div th:if="${error}" class="alert alert-danger">
+    <p th:text="${error}"></p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const clasSelect = document.getElementById('clas');
+        const typeSelect = document.getElementById('type');
+        const fuelPropulsionSelect = document.getElementById('fuelPropulsion');
+        const typeOfMotorSelect = document.getElementById('typeOfMotor');
+
+        const classOptions = {
+            motocicleta: ['N/A'],
+            motocarro: ['Transporte de carga', 'Transporte de pasajeros'],
+            liviano: ['Automovil', 'Campero', 'Camioneta', 'Microbus', 'Ambulancia', 'Taxi'],
+            pesado: ['Microbus', 'BusBuseta', 'Camión / Doble troque', 'Tratocamion', 'Volqueta']
+        };
+
+        const fuelOptions = {
+            motocicleta: ['Selecciona una opción','Gasolina (Ciclo OTTO)'],
+            motocarro: ['Selecciona una opción','Gasolina (Ciclo OTTO)', 'Diesel (Ciclo Diesel)'],
+            liviano: ['Selecciona una opción','Gasolina (Ciclo OTTO)', 'Diesel (Ciclo Diesel)', 'Gas / Gasolina', 'Eléctrico'],
+            pesado: ['Selecciona una opción','Diesel (Ciclo Diesel)']
+        };
+
+        const motorTypes = {
+            'Gasolina (Ciclo OTTO)': 'OTTO',
+            'Diesel (Ciclo Diesel)': 'Diesel',
+            'Gas / Gasolina': 'OTTO',
+            'Eléctrico': 'Eléctrico'
+        };
+
+        clasSelect.addEventListener('change', function () {
+            const selectedClas = this.value;
+            const types = classOptions[selectedClas] || [];
+            const fuels = fuelOptions[selectedClas] || [];
+
+            // Update type select options
+            typeSelect.innerHTML = types.map(type => `<option value="${type}">${type}</option>`).join('');
+
+            // Update fuel select options
+            fuelPropulsionSelect.innerHTML = fuels.map(fuel => `<option value="${fuel}">${fuel}</option>`).join('');
+
+            // Reset type of motor
+            typeOfMotorSelect.innerHTML = '<option value="">Selecciona una opción</option>';
+        });
+
+        fuelPropulsionSelect.addEventListener('change', function () {
+            const selectedFuel = this.value;
+            const motorType = motorTypes[selectedFuel] || '';
+            typeOfMotorSelect.innerHTML = `<option value="${motorType}">${motorType}</option>`;
+        });
+    });
+</script>
+
+</body>
+</html>

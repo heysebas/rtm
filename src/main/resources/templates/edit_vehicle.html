@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Vehicle</title>
+</head>
+<body>
+
+<h1>Edit Vehicle</h1>
+
+<form th:action="@{'/vehicles/' + ${vehicle.id}}" th:object="${vehicle}" method="post">
+    <label for="plateNumber">Plate Number:</label>
+    <input type="text" id="plateNumber" th:field="*{plateNumber}" required/><br/>
+
+    <label for="type">Type:</label>
+    <input type="text" id="type" th:field="*{type}" required/><br/>
+
+    <label for="brand">Brand:</label>
+    <input type="text" id="brand" th:field="*{brand}" required/><br/>
+
+    <!-- Add additional fields as necessary -->
+
+    <input type="submit" value="Update"/>
+</form>
+
+</body>
+</html>
