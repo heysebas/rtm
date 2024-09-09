@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VehicleServiceImpl implements IVehicleService {
@@ -56,4 +57,26 @@ public class VehicleServiceImpl implements IVehicleService {
         Optional<Vehicle> vehicleOpt = vehicleRepository.findFirstByPlateNumber(plate_number);
         return vehicleOpt.orElse(null);
     }
+
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<String> getAllVehicleNames() {
+        List<Object[]> results = vehicleRepository.findAllVehicleNames();
+        return results.stream()
+                .map(result -> (String) result[0])
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<String> getAllMotociletaNames() {
+        List<Object[]> results = vehicleRepository.findAllMotocicletaNames();
+        return results.stream()
+                .map(result -> (String) result[0])
+                .collect(Collectors.toList());
+    }
+
+
 }

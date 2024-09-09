@@ -14,4 +14,11 @@ public interface IVehicleService {
 
     // Método para buscar vehiculos por placa
     Vehicle findByPlateNumber(String plate_number);
+
+    List<String> getAllVehicleNames();
+
+    List<String> getAllMotociletaNames();
+
+
+
 }

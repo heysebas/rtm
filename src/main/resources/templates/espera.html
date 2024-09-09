@@ -11,11 +11,13 @@
             padding: 0;
             color: #333;
         }
+
         h1 {
             text-align: center;
             margin: 20px 0;
             color: #333;
         }
+
         .container {
             width: 90%;
             max-width: 1200px;
@@ -25,21 +27,26 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
+
         a {
             color: #007bff;
             text-decoration: none;
         }
+
         a:hover {
             text-decoration: underline;
         }
+
         .add-client {
             display: block;
             text-align: right;
             margin-bottom: 20px;
         }
+
         .search {
             margin-bottom: 20px;
         }
+
         input[type="text"] {
             width: calc(100% - 100px);
             padding: 10px;
@@ -48,6 +55,7 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         button {
             padding: 10px 15px;
             border: none;
@@ -56,47 +64,59 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
             overflow-x: auto; /* Permite el desplazamiento horizontal en pantallas pequeñas */
-            display: block;
+            table-layout: auto; /* Ajusta automáticamente el ancho de las columnas */
         }
+
         th, td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            word-wrap: break-word; /* Permite que el texto se ajuste dentro de las celdas */
         }
+
         th {
             background-color: #007bff;
             color: white;
         }
+
         tr:hover {
             background-color: #f1f1f1;
         }
+
         .actions a {
             margin-right: 10px;
             color: #007bff;
         }
+
         .actions a:hover {
             text-decoration: underline;
         }
+
         @media (max-width: 768px) {
             th, td {
                 padding: 8px;
             }
+
             .add-client, .search {
                 text-align: center;
                 margin-bottom: 10px;
             }
+
             input[type="text"] {
                 width: calc(100% - 60px);
                 padding: 8px;
             }
+
             button {
                 width: 100%;
                 margin-top: 10px;
@@ -107,13 +127,12 @@
 <body>
 
 <div class="container">
-    <h1>Lista de Vehículos</h1>
+    <h1 th:text="${title}">Lista de Vehículos</h1>
 
     <div class="add-client">
-        <a th:href="@{/vehicles/new}">Agregar Vehículo</a>
+        <a th:href="@{/vehicles/searchvehicles}">Agregar Vehículo</a>
     </div>
 
-    <!-- Formulario de búsqueda -->
     <div class="search">
         <input type="text" id="search-input" placeholder="Buscar por Placa" onkeyup="filterTable()" />
     </div>
@@ -121,67 +140,22 @@
     <table id="vehicles-table">
         <thead>
         <tr>
-            <th>ID</th>
             <th>Estado</th>
             <th>Placa</th>
-            <th>Pais</th>
-            <th>Servicio</th>
             <th>Tipología</th>
             <th>Clase</th>
             <th>Marca</th>
             <th>Línea</th>
-            <th>Número de licencia de tránsito</th>
-            <th>Fecha Matrícula</th>
-            <th>Color</th>
-            <th>Combustible / Propulsión</th>
-            <th>Chasis</th>
-            <th>Número de motor</th>
-            <th>Tipo de motor</th>
-            <th>Cilindraje</th>
-            <th>Kilometraje</th>
-            <th>Número de pasajeros sin incluir al conductor</th>
-            <th>Blindaje</th>
-            <th>Potencia</th>
-            <th>Tipo de Carrocería</th>
-            <th>Fecha de vencimiento del SOAT</th>
-            <th>Conversión GNV</th>
-            <th>Fecha de conversión GNV</th>
-            <th>Documento del cliente</th>
-            <th>Acción</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="vehicle : ${vehicles}">
-            <td th:text="${vehicle.id}"></td>
             <td th:text="${vehicle.state}"></td>
             <td th:text="${vehicle.plateNumber}"></td>
-            <td th:text="${vehicle.country}"></td>
-            <td th:text="${vehicle.service}"></td>
             <td th:text="${vehicle.clas}"></td>
             <td th:text="${vehicle.type}"></td>
             <td th:text="${vehicle.brand}"></td>
             <td th:text="${vehicle.line}"></td>
-            <td th:text="${vehicle.trafficLicenseNumber}"></td>
-            <td th:text="${vehicle.registrationDate}"></td>
-            <td th:text="${vehicle.color}"></td>
-            <td th:text="${vehicle.fuelPropulsion}"></td>
-            <td th:text="${vehicle.vinOrChassis}"></td>
-            <td th:text="${vehicle.engineNumber}"></td>
-            <td th:text="${vehicle.typeOfMotor}"></td>
-            <td th:text="${vehicle.cylinderCapacity}"></td>
-            <td th:text="${vehicle.mileage}"></td>
-            <td th:text="${vehicle.passengerNumber}"></td>
-            <td th:text="${vehicle.armor}"></td>
-            <td th:text="${vehicle.power}"></td>
-            <td th:text="${vehicle.bodyType}"></td>
-            <td th:text="${vehicle.soat}"></td>
-            <td th:text="${vehicle.ngvConversion}"></td>
-            <td th:text="${vehicle.dateNgvConversion}"></td>
-            <td th:text="${vehicle.documentClient}"></td>
-            <td class="actions">
-                <a th:href="@{'/vehicles/edit/' + ${vehicle.id}}">Editar</a> |
-                <a th:href="@{'/vehicles/delete/' + ${vehicle.id}}">Eliminar</a>
-            </td>
         </tr>
         </tbody>
     </table>

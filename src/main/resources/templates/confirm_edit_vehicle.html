@@ -39,12 +39,13 @@
 <body>
 
 <div class="container">
-    <h1>Vehiculo ya registrado</h1>
-    <p>El vehiculo con la placa proporcionado ya existe. ¿Desea editar la información del vehiculo existente?</p>
-    <form th:action="@{/vehicles/confirm-edit}" method="post">
-        <input type="hidden" name="document" th:value="${vehicleToEdit.plateNumber}" />
-        <button type="submit" name="confirm" value="yes" class="button">Sí, Editar</button>
-        <button type="submit" name="confirm" value="no" class="button cancel">Cancelar</button>
+    <h1>Vehículo ya registrado</h1>
+    <p>El vehículo con la placa proporcionada ya existe. ¿Desea editar la información del vehículo existente?</p>
+    <form th:action="@{/vehicles/confirm-edit-vehicle}" method="post">
+        <!-- Campo oculto para enviar el número de placa -->
+        <input type="hidden" name="plateNumber" th:value="${vehicleToEdit.plateNumber}"/>
+        <button type="submit" name="confirm" value="yes" class="button">Sí</button>
+        <button type="submit" name="confirm" value="no" class="button cancel">No</button>
     </form>
 </div>
 

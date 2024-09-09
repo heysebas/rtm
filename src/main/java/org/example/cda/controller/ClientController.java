@@ -52,7 +52,7 @@ public class ClientController {
 
         service.saveCustomer(customer);
         flash.addFlashAttribute("success", "Cliente guardado con éxito");
-        return "redirect:/customers/";
+        return "redirect:/vehicles/espera";
     }
 
     @GetMapping("/edit/{id}")
@@ -73,7 +73,7 @@ public class ClientController {
         existingClient.setDepartment(customer.getDepartment());
 
         service.updateClients(existingClient);
-        return "redirect:/customers/";
+        return "redirect:/vehicles/espera";
     }
 
     @GetMapping("/delete/{id}")
@@ -102,6 +102,6 @@ public class ClientController {
                 return "redirect:/customers/edit/" + existingClient.getId();
             }
         }
-        return "redirect:/customers/";
+        return "redirect:/vehicles/espera";
     }
 }

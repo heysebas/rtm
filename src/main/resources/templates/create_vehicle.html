@@ -31,6 +31,13 @@
             row-gap: normal;
             margin-right: 2%;
         }
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
 
         label {
             display: block;
@@ -126,10 +133,23 @@
                 <!-- Options will be dynamically populated -->
             </select>
         </div>
+
         <div>
             <label for="brand">Marca:</label>
-            <input type="text" id="brand" th:field="*{brand}" required/>
+            <select id="brand" th:field="*{brand}" required>
+                <option value="">Selecciona una marca</option>
+                <!-- Opciones de vehicleNames -->
+                <option th:each="name : ${vehicleNames}" th:value="${name}" th:text="${name}" class="vehicleNames"></option>
+                <!-- Opciones de vehicleNames2 -->
+                <option th:each="name : ${vehicleNames2}" th:value="${name}" th:text="${name}" class="vehicleNames2" style="display:none;"></option>
+            </select>
         </div>
+
+
+        <!--        <div>-->
+<!--            <label for="brand">Marca:</label>-->
+<!--            <input type="text" id="brand" th:field="*{brand}" required/>-->
+<!--        </div>-->
         <div>
             <label for="line">Línea:</label>
             <input type="text" id="line" th:field="*{line}" required/>
@@ -266,6 +286,36 @@
             typeOfMotorSelect.innerHTML = `<option value="${motorType}">${motorType}</option>`;
         });
     });
+
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const clasSelect = document.getElementById('clas');
+        const brandSelect = document.getElementById('brand');
+        const vehicleNamesOptions = document.querySelectorAll('.vehicleNames');
+        const vehicleNames2Options = document.querySelectorAll('.vehicleNames2');
+
+        clasSelect.addEventListener('change', function () {
+            const selectedClas = this.value;
+
+            // Reset the options
+            vehicleNamesOptions.forEach(option => option.style.display = 'none');
+            vehicleNames2Options.forEach(option => option.style.display = 'none');
+
+            if (selectedClas === 'motocicleta' || selectedClas === 'motocarro') {
+                vehicleNames2Options.forEach(option => option.style.display = 'block');
+            } else {
+                vehicleNamesOptions.forEach(option => option.style.display = 'block');
+            }
+        });
+
+        // Trigger the change event to set the initial state
+        clasSelect.dispatchEvent(new Event('change'));
+    });
+
+
 </script>
 
 </body>

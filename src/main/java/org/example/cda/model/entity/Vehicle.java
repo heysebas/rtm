@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Date;
-
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -21,7 +21,7 @@ public class Vehicle {
     private String country; // País
     private String service; // Servicio
     private String type;  // Tipo de vehículo
-    private String clas; // clase de vehiculo
+    private String clas; // Clase de vehículo
     private String brand; // Marca
     private String line; // Línea
     @Column(name = "traffic_license_number")
@@ -53,6 +53,17 @@ public class Vehicle {
     private Date dateNgvConversion; // Fecha de conversión GNV
     @Column(name = "document_client")
     private String documentClient; // Documento del cliente
+    private String state = "Revisión"; // Estado de vehículos por defecto  // Aprobado Rechazado y en Revisión
+
+    // Campo para la fecha actual
+    @Column(name = "fecha_actual")
+    private Date fechaActual;
+
+    // Constructor
+    public Vehicle() {
+        this.fechaActual = Date.valueOf(LocalDate.now());
+    }
+
 
     // Relaciones con otras tablas pueden agregarse aquí
     // @ManyToOne

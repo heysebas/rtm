@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Vehículo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center; /* Centrar todo el contenido dentro del body */
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px; /* Espacio debajo del título */
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 55%;
+            margin: 0 auto; /* Centrar el formulario horizontalmente */
+            text-align: left; /* Alinear el texto dentro del formulario a la izquierda */
+        }
+
+        .form-grid {
+            display: flex;
+            justify-content: center; /* Centrar el contenedor dentro del formulario */
+            gap: 40px; /* Espacio entre columnas */
+        }
+
+        .form-grid > div {
+            max-width: 600px; /* Opcional: limitar el ancho de cada campo */
+            flex: 1; /* Permitir que los campos se expandan */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 16px; /* Añadir separación entre campos */
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            grid-column: span 2; /* Span across both columns */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            text-align: center; /* Centrar el texto dentro de la alerta */
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Buscar Vehículo</h1>
+<form th:action="@{/vehicles/searchVehicle}" th:object="${vehicle}" method="post">
+
+    <div class="form-grid">
+        <!-- Campos aquí -->
+        <div>
+            <label for="plateNumber">Placa:</label>
+            <input type="text" id="plateNumber" th:field="*{plateNumber}" required/>
+        </div>
+    </div>
+
+    <input type="submit" value="Buscar"/>
+</form>
+
+<!-- Mostrar mensajes de error -->
+<div th:if="${error}" class="alert alert-danger">
+    <p th:text="${error}"></p>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const clasSelect = document.getElementById('clas');
+        const typeSelect = document.getElementById('type');
+        const fuelPropulsionSelect = document.getElementById('fuelPropulsion');
+        const typeOfMotorSelect = document.getElementById('typeOfMotor');
+
+        const classOptions = {
+            motocicleta: ['N/A'],
+            motocarro: ['Transporte de carga', 'Transporte de pasajeros'],
+            liviano: ['Automovil', 'Campero', 'Camioneta', 'Microbus', 'Ambulancia', 'Taxi'],
+            pesado: ['Microbus', 'BusBuseta', 'Camión / Doble troque', 'Tratocamion', 'Volqueta']
+        };
+
+        const fuelOptions = {
+            motocicleta: ['Selecciona una opción','Gasolina (Ciclo OTTO)'],
+            motocarro: ['Selecciona una opción','Gasolina (Ciclo OTTO)', 'Diesel (Ciclo Diesel)'],
+            liviano: ['Selecciona una opción','Gasolina (Ciclo OTTO)', 'Diesel (Ciclo Diesel)', 'Gas / Gasolina', 'Eléctrico'],
+            pesado: ['Selecciona una opción','Diesel (Ciclo Diesel)']
+        };
+
+        const motorTypes = {
+            'Gasolina (Ciclo OTTO)': 'OTTO',
+            'Diesel (Ciclo Diesel)': 'Diesel',
+            'Gas / Gasolina': 'OTTO',
+            'Eléctrico': 'Eléctrico'
+        };
+
+        clasSelect.addEventListener('change', function () {
+            const selectedClas = this.value;
+            const types = classOptions[selectedClas] || [];
+            const fuels = fuelOptions[selectedClas] || [];
+
+            // Update type select options
+            typeSelect.innerHTML = types.map(type => `<option value="${type}">${type}</option>`).join('');
+
+            // Update fuel select options
+            fuelPropulsionSelect.innerHTML = fuels.map(fuel => `<option value="${fuel}">${fuel}</option>`).join('');
+
+            // Reset type of motor
+            typeOfMotorSelect.innerHTML = '<option value="">Selecciona una opción</option>';
+        });
+
+        fuelPropulsionSelect.addEventListener('change', function () {
+            const selectedFuel = this.value;
+            const motorType = motorTypes[selectedFuel] || '';
+            typeOfMotorSelect.innerHTML = `<option value="${motorType}">${motorType}</option>`;
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const clasSelect = document.getElementById('clas');
+        const brandSelect = document.getElementById('brand');
+        const vehicleNamesOptions = document.querySelectorAll('.vehicleNames');
+        const vehicleNames2Options = document.querySelectorAll('.vehicleNames2');
+
+        clasSelect.addEventListener('change', function () {
+            const selectedClas = this.value;
+
+            // Reset the options
+            vehicleNamesOptions.forEach(option => option.style.display = 'none');
+            vehicleNames2Options.forEach(option => option.style.display = 'none');
+
+            if (selectedClas === 'motocicleta' || selectedClas === 'motocarro') {
+                vehicleNames2Options.forEach(option => option.style.display = 'block');
+            } else {
+                vehicleNamesOptions.forEach(option => option.style.display = 'block');
+            }
+        });
+
+        // Trigger the change event to set the initial state
+        clasSelect.dispatchEvent(new Event('change'));
+    });
+</script>
+
+</body>
+</html>

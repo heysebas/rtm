@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box; /* To include padding in width */
+        }
+
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+    </style>
+    <title>Agregar/Editar Marca</title>
+</head>
+<body>
+
+<h1 th:text="${brandMotocicleta.id} == null ? 'Agregar Marca' : 'Editar Marca'"></h1>
+
+<form th:action="@{/brandMotocicletas/register}" th:object="${brandMotocicleta}" method="post">
+    <label for="name">Nombre Completo:</label>
+    <input type="text" id="name" th:field="*{name}" required/>
+
+    <input type="submit" value="Guardar"/>
+</form>
+
+<!-- Si es una edición, deberías usar un formulario diferente o manejar el caso de editar -->
+<form th:if="${brandMotocicleta.id != null}" th:action="@{/brandMotocicletas/update/{id}(id=${brandMotocicleta.id})}" th:object="${brandMotocicleta}" method="post">
+    <input type="submit" value="Actualizar"/>
+</form>
+
+</body>
+</html>

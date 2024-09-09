@@ -2,12 +2,101 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Edit Vehicle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 75%;
+            margin: auto;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px; /* Espacio entre columnas */
+            row-gap: normal;
+            margin-right: 2%;
+        }
+        <style>
+         body {
+             font-family: Arial, sans-serif;
+             background-color: #f4f4f4;
+             margin: 0;
+             padding: 20px;
+         }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 16px; /* Añadir separación entre campos */
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            grid-column: span 2; /* Span across both columns */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
 <h1>Edit Vehicle</h1>
 
-<form th:action="@{'/vehicles/' + ${vehicle.id}}" th:object="${vehicle}" method="post">
+<form th:action="@{'/vehicles/update/' + ${vehicle.id}}" th:object="${vehicle}" method="post">
     <label for="plateNumber">Plate Number:</label>
     <input type="text" id="plateNumber" th:field="*{plateNumber}" required/><br/>
 
