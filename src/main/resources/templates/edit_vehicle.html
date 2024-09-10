@@ -97,18 +97,140 @@
 <h1>Edit Vehicle</h1>
 
 <form th:action="@{'/vehicles/update/' + ${vehicle.id}}" th:object="${vehicle}" method="post">
-    <label for="plateNumber">Plate Number:</label>
-    <input type="text" id="plateNumber" th:field="*{plateNumber}" required/><br/>
+    <div class="form-grid">
+        <!-- Fields here -->
+        <div>
+            <label for="plateNumber">Placa:</label>
+            <input type="text" id="plateNumber" th:field="*{plateNumber}" required/>
+        </div>
+        <div>
+            <label for="country">País:</label>
+            <input type="text" id="country" th:field="*{country}" required/>
+        </div>
+        <div>
+            <label for="service">Servicio:</label>
+            <select id="service" name="service" required>
+                <option value="">Selecciona un servicio</option>
+                <option value="particular">Particular</option>
+                <option value="publico">Público</option>
+                <option value="ensenanza">Enseñanza</option>
+            </select>
+        </div>
+        <div>
+            <label for="clas">Tipología:</label>
+            <select id="clas" name="clas" required>
+                <option value="">Selecciona una tipología</option>
+                <option value="motocicleta">Motocicleta</option>
+                <option value="motocarro">Motocarro</option>
+                <option value="liviano">Liviano</option>
+                <option value="pesado">Pesado</option>
+            </select>
+        </div>
+        <div>
+            <label for="type">Clase:</label>
+            <select id="type" name="type" required>
+                <!-- Options will be dynamically populated -->
+            </select>
+        </div>
 
-    <label for="type">Type:</label>
-    <input type="text" id="type" th:field="*{type}" required/><br/>
+        <div>
+            <label for="brand">Marca:</label>
+            <select id="brand" th:field="*{brand}" required>
+                <option value="">Selecciona una marca</option>
+                <!-- Opciones de vehicleNames -->
+                <option th:each="name : ${vehicleNames}" th:value="${name}" th:text="${name}" class="vehicleNames"></option>
+                <!-- Opciones de vehicleNames2 -->
+                <option th:each="name : ${vehicleNames2}" th:value="${name}" th:text="${name}" class="vehicleNames2" style="display:none;"></option>
+            </select>
+        </div>
 
-    <label for="brand">Brand:</label>
-    <input type="text" id="brand" th:field="*{brand}" required/><br/>
 
-    <!-- Add additional fields as necessary -->
+        <!--        <div>-->
+        <!--            <label for="brand">Marca:</label>-->
+        <!--            <input type="text" id="brand" th:field="*{brand}" required/>-->
+        <!--        </div>-->
+        <div>
+            <label for="line">Línea:</label>
+            <input type="text" id="line" th:field="*{line}" required/>
+        </div>
+        <div>
+            <label for="trafficLicenseNumber">Número de licencia de tránsito:</label>
+            <input type="text" id="trafficLicenseNumber" th:field="*{trafficLicenseNumber}" required/>
+        </div>
+        <div>
+            <label for="registrationDate">Fecha Matrícula:</label>
+            <input type="date" id="registrationDate" th:field="*{registrationDate}" required/>
+        </div>
+        <div>
+            <label for="color">Color:</label>
+            <input type="text" id="color" th:field="*{color}" required/>
+        </div>
+        <div id="fuelPropulsionDiv">
+            <label for="fuelPropulsion">Combustible / Propulsión:</label>
+            <select id="fuelPropulsion" name="fuelPropulsion" required>
+                <option value="">Selecciona una opción</option>
+                <!-- Options will be dynamically populated -->
+            </select>
+        </div>
+        <div>
+            <label for="engineNumber">No de Motor:</label>
+            <input type="text" id="engineNumber" th:field="*{engineNumber}" required/>
+        </div>
+        <div>
+            <label for="typeOfMotor">Tipo de Motor:</label>
+            <select id="typeOfMotor" name="typeOfMotor" required>
+                <option value="">Selecciona una opción</option>
+                <!-- Options will be dynamically populated -->
+            </select>
+        </div>
+        <div>
+            <label for="cylinderCapacity">Cilindraje (cm³) (si aplica):</label>
+            <select id="cylinderCapacity" name="cylinderCapacity" required>
+                <option value="">Selecciona una opción</option>
+                <option value="menor_500">Menor a 500 cm³</option>
+                <option value="mayor_500">Mayor a 500 cm³</option>
+                <option value="no_aplica">No Aplica</option>
+            </select>
+        </div>
+        <div>
+            <label for="transmission">Transmisión:</label>
+            <select id="transmission" name="transmission" required>
+                <option value="">Selecciona una opción</option>
+                <option value="automatica">Automática</option>
+                <option value="mecanica">Mecánica</option>
+                <option value="semiautomatica">Semiautomática</option>
+                <option value="no_aplica">No Aplica</option>
+            </select>
+        </div>
+        <div>
+            <label for="power">Potencia (si aplica):</label>
+            <input type="text" id="power" th:field="*{power}" required/>
+        </div>
+        <div>
+            <label for="bodyType">Tipo de Carrocería:</label>
+            <input type="text" id="bodyType" th:field="*{bodyType}" required/>
+        </div>
+        <div>
+            <label for="soat">Fecha Vencimiento SOAT:</label>
+            <input type="date" id="soat" th:field="*{soat}" required/>
+        </div>
+        <div>
+            <label for="ngvConversion">Conversión GNV:</label>
+            <input type="text" id="ngvConversion" th:field="*{ngvConversion}" required/>
+        </div>
+        <div>
+            <label for="dateNgvConversion">Fecha Vencimiento GNV:</label>
+            <input type="date" id="dateNgvConversion" th:field="*{dateNgvConversion}" required/>
+        </div>
+        <div>
+            <label for="documentClient">Documento de Cliente:</label>
+            <input type="text" id="documentClient" th:field="*{documentClient}" required/>
+        </div>
+    </div>
 
-    <input type="submit" value="Update"/>
+    <input type="submit" value="Guardar"/>
+
+<!--    <input type="submit" value="Update"/>-->
 </form>
 
 </body>
